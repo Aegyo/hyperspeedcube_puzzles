@@ -90,7 +90,7 @@ puzzles:add{
     for _, p in pairs(poles) do
         local depth = p == pole2 and 1 - 0.12 or 1 - 0.03
         for t, axis in sym:orbit(p) do
-            self.axes:add(axis, {INF, depth})
+            self.axes:add(axis, {INF, depth })
         end
     end
     
