@@ -18,7 +18,7 @@ puzzles:add {
         self.axes:add(octa:iter_poles(), { INF, 0, -INF })
 
         for t, axis, twist_t in octa.sym.chiral:orbit(self.axes[1], octa.sym:thru(3, 2)) do
-            self.twists:add(axis, twist_t, { gizmo_pole_distance = 1 / 2 })
+            self.twists:add(axis, twist_t, { gizmo_pole_distance = 3 / 4 })
         end
 
         lib.utils.unpack_named(_ENV, self.axes)
