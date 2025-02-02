@@ -29,11 +29,12 @@ puzzles:add {
 
     tags = {
         builtin = '2.0.0',
+        inventor = "Tony Fisher",
+        external = { museum = 656 },
         author = { "Jessica Chen" },
-        inventor = "Uwe Mèffert",
-        'type/puzzle',
-        'shape/3d/platonic/dodecahedron',
 
+        'shape/3d/platonic/dodecahedron',
         axes = { '3d/elementary/octahedral' },
+        algebraic = { 'doctrinaire' }
     },
 }
