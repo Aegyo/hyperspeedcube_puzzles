@@ -18,7 +18,7 @@ puzzle_generators:add {
                 local tetra = lib.symmetries.tetrahedral.tetrahedron(2/3)
         
                 self:carve(tetra:iter_poles())
-                self.axes:add(tetra.sym:orbit(tetra.sym.oxo.unit), lib.utils.layers.inclusive_inf(1/2, -1/2, size))
+                self.axes:add(tetra.sym:orbit(tetra.sym.oxo.unit), lib.utils.layers.inclusive_inf(1/3, -1/3, size))
         
                 for _, axis in ipairs(self.axes) do
                     self.twists:add(axis, rot{ fix = axis.vector, angle = tau / 4}, { gizmo_pole_distance = 2/3})
