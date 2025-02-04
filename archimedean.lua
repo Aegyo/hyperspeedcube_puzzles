@@ -3,7 +3,6 @@ puzzles:add{
     name = 'Truncated Octahedron',
     version = '0.1.0',
     ndim = 3,
-    tags = { author = { 'Jessica Chen' } },
     build = function(self)
         local sym = cd'bc3'
         
@@ -45,7 +44,11 @@ puzzles:add{
         self:mark_piece(FLU(1) & FRU(1) & ~F(1) & ~U(1), 'hex_edge', 'Hexagon Edge')
         self:mark_piece(F(1) & FLU(1) & FRU(1), 'corner', 'Corner')
         self:unify_piece_types(sym.chiral)
-    end
+    end,
+    tags = {
+        author = { 'Jessica Chen' },
+        'shape/3d/archimedean'
+    },
 }
 
 puzzles:add{
@@ -53,17 +56,16 @@ puzzles:add{
     name = 'Icosidodecahedron',
     version = '0.1.0',
     ndim = 3,
-    tags = { author = { 'Jessica Chen' } },
-    colors = 'snub_cube_jess',
     build = function(self)
         local sym = cd'h3'
 
         local dodeca_d = sqrt((5 + 2*sqrt(5))/5)
         local icosi_d = sqrt((7+3*sqrt(5))/6)
 
-        self:carve(sym:orbit(sym.oox.unit * dodeca_d))
-        self:carve(sym:orbit(sym.xoo.unit * icosi_d))
+        self:carve(lib.symmetries.h3.dodecahedron(dodeca_d):iter_poles('X'))
+        self:carve(lib.symmetries.h3.icosahedron(icosi_d):iter_poles('Y'))
 
+        print(dodeca_d * 0.85, icosi_d * 0.925)
         self.axes:add(sym:orbit(sym.oox.unit), { INF, dodeca_d * 0.85 })
         self.axes:add(sym:orbit(sym.xoo.unit), { INF, icosi_d * 0.925 })
         
@@ -73,5 +75,16 @@ puzzles:add{
         for _, a, t in sym.chiral:orbit(self.axes[sym.xoo], sym:thru(3,2)) do
             self.twists:add(a, t, { gizmo_pole_distance = icosi_d })
         end
-    end
+        
+        for i = 1,12 do
+            self.colors[i].default = 'Turbo[' .. i ..'/12]'
+        end
+        for i = 13,32 do
+            self.colors[i].default = 'Dark Rainbow['.. i ..'/20]'
+        end
+    end,
+    tags = {
+        author = { 'Jessica Chen' },
+        'shape/3d/archimedean'
+    },
 }
