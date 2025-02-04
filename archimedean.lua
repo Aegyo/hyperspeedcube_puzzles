@@ -47,3 +47,31 @@ puzzles:add{
         self:unify_piece_types(sym.chiral)
     end
 }
+
+puzzles:add{
+    id = 'icosidodecahedron',
+    name = 'Icosidodecahedron',
+    version = '0.1.0',
+    ndim = 3,
+    tags = { author = { 'Jessica Chen' } },
+    colors = 'snub_cube_jess',
+    build = function(self)
+        local sym = cd'h3'
+
+        local dodeca_d = sqrt((5 + 2*sqrt(5))/5)
+        local icosi_d = sqrt((7+3*sqrt(5))/6)
+
+        self:carve(sym:orbit(sym.oox.unit * dodeca_d))
+        self:carve(sym:orbit(sym.xoo.unit * icosi_d))
+
+        self.axes:add(sym:orbit(sym.oox.unit), { INF, dodeca_d * 0.85 })
+        self.axes:add(sym:orbit(sym.xoo.unit), { INF, icosi_d * 0.925 })
+        
+        for _, a, t in sym.chiral:orbit(self.axes[sym.oox], sym:thru(2,1)) do
+            self.twists:add(a, t, { gizmo_pole_distance = dodeca_d })
+        end
+        for _, a, t in sym.chiral:orbit(self.axes[sym.xoo], sym:thru(3,2)) do
+            self.twists:add(a, t, { gizmo_pole_distance = icosi_d })
+        end
+    end
+}
