@@ -78,6 +78,14 @@ puzzles:add{
             self.twists:add(a, t, { gizmo_pole_distance = icosa_d })
         end
         
+        lib.utils.unpack_named(_ENV, self.axes)
+        self:mark_piece(Penta_F(1) & ~Tri_U(1) & ~Tri_F(1) & ~Tri_R(1) & ~Tri_UR(1) & ~Tri_FR(1), 'penta_center', 'Pentagon Center')
+        self:mark_piece(Penta_F(1) & Penta_L(1) & Penta_DL(1), 'tri_center', 'Triangle Center')
+        self:mark_piece(Penta_F(1) & Tri_U(1) & ~Penta_L(1) & ~Penta_U(1), 'two_col_edge', '2C Edge')
+        self:mark_piece(Tri_U(1) & Penta_F(1) & Penta_L(1) & ~Tri_F(1) & ~Penta_U(1), 'three_col_edge', '3C Edge')
+        self:mark_piece(Penta_F(1) & Penta_L(1) & Tri_F(1) & Tri_U(1), 'corner', 'Corner')
+        self:unify_piece_types(sym.chiral)
+
         for i = 1,12 do
             self.colors[i].default = 'Turbo[' .. i ..'/12]'
         end
