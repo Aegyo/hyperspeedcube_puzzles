@@ -60,20 +60,22 @@ puzzles:add{
         local sym = cd'h3'
 
         local dodeca_d = sqrt((5 + 2*sqrt(5))/5)
-        local icosi_d = sqrt((7+3*sqrt(5))/6)
+        local icosa_d = sqrt((7+3*sqrt(5))/6)
 
-        self:carve(lib.symmetries.h3.dodecahedron(dodeca_d):iter_poles('X'))
-        self:carve(lib.symmetries.h3.icosahedron(icosi_d):iter_poles('Y'))
+        local dodeca = lib.symmetries.h3.dodecahedron(dodeca_d)
+        local icosa = lib.symmetries.h3.icosahedron(icosa_d)
 
-        print(dodeca_d * 0.85, icosi_d * 0.925)
-        self.axes:add(sym:orbit(sym.oox.unit), { INF, dodeca_d * 0.85 })
-        self.axes:add(sym:orbit(sym.xoo.unit), { INF, icosi_d * 0.925 })
+        self:carve(dodeca:iter_poles('Penta_'))
+        self:carve(icosa:iter_poles('Tri_'))
+
+        self.axes:add(dodeca:iter_poles('Penta_'), { INF, dodeca_d * 0.85 })
+        self.axes:add(icosa:iter_poles('Tri_'), { INF, icosa_d * 0.925 })
         
         for _, a, t in sym.chiral:orbit(self.axes[sym.oox], sym:thru(2,1)) do
             self.twists:add(a, t, { gizmo_pole_distance = dodeca_d })
         end
         for _, a, t in sym.chiral:orbit(self.axes[sym.xoo], sym:thru(3,2)) do
-            self.twists:add(a, t, { gizmo_pole_distance = icosi_d })
+            self.twists:add(a, t, { gizmo_pole_distance = icosa_d })
         end
         
         for i = 1,12 do
