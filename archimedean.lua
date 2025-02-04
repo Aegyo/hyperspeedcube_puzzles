@@ -18,7 +18,7 @@ puzzles:add{
         for _, a, t in sym:orbit(self.axes[sym.xoo], sym:thru(3,2)) do
             self.twists:add(a, t, { gizmo_pole_distance = hex_d })
         end
-        for _, a, t in sym:orbit(self.axes[sym.oox], sym:thru(2,1)) do
+        for _, a, t in sym:orbit(self.axes[sym.oox], sym:thru(1,2)) do
             self.twists:add(a, t, { gizmo_pole_distance = square_d })
         end
     end
