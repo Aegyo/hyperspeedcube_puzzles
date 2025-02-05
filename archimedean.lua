@@ -4,20 +4,19 @@ puzzles:add{
     version = '0.1.0',
     ndim = 3,
     build = function(self)
-        local sym = cd'a3'
+        local shape = lib.util.shape.truncated_tetrahedron()
 
-        local trunc_d = 5/3
-        self:carve(sym:orbit(sym.xoo.unit))
-        self:carve(sym:orbit(sym.oox.unit*trunc_d))
+        self:carve(shape:iter_hex_poles())
+        self:carve(shape:iter_tri_poles())
 
-        self.axes:add(sym.chiral:orbit(sym.xoo.unit), { INF, 0.7 })
-        self.axes:add(sym.chiral:orbit(sym.oox.unit), { INF, 0.8 * trunc_d })
+        self.axes:add(shape:iter_hex_poles(), { INF, 0.7 * shape.hex_pole.mag })
+        self.axes:add(shape:iter_tri_poles(), { INF, 0.8 * shape.tri_pole.mag })
 
-        for _, a, t in sym.chiral:orbit(self.axes[sym.xoo], sym:thru(3,2)) do
-            self.twists:add(a, t, {gizmo_pole_distance = 1})
+        for _, a, t in shape.sym.chiral:orbit(self.axes[shape.hex_pole], shape.sym:thru(3,2)) do
+            self.twists:add(a, t, {gizmo_pole_distance = shape.hex_pole.mag})
         end
-        for _, a, t in sym.chiral:orbit(self.axes[sym.oox], sym:thru(2,1)) do
-            self.twists:add(a, t, {gizmo_pole_distance = trunc_d})
+        for _, a, t in shape.sym.chiral:orbit(self.axes[shape.tri_pole], shape.sym:thru(2,1)) do
+            self.twists:add(a, t, {gizmo_pole_distance = shape.tri_pole.mag})
         end
     end,
     tags = {
@@ -31,37 +30,19 @@ puzzles:add{
     version = '0.1.0',
     ndim = 3,
     build = function(self)
-        local sym = cd'bc3'
+        local shape = lib.util.shape.truncated_octahedron(3/2)
         
-        local hex_d = sqrt(6)/2
-        local square_d = sqrt(2)
-        self:carve(sym:orbit(sym.xoo.unit*hex_d))
-        self:carve(sym:orbit(sym.oox.unit*square_d))
+        self:carve(shape:iter_hex_poles())
+        self:carve(shape:iter_square_poles())
         
-        self.axes:add(sym:orbit(sym.xoo.unit):named({
-            BRU = {3, 'FRD'},
-            FLU = {1, 'FRU'},
-            BLU = {3, 'FLD'},
-            FRD = {2, 'FLU'},
-            FRU = {},
-            BRD = {2, 'BLU'},
-            FLD = {1, 'FRD'},
-            BLD = {1, 'BRD'},
-        }), {INF, hex_d - 1/3})
-        self.axes:add(sym:orbit(sym.oox.unit):named({
-            F = {},
-            U = {3, 'F'},
-            R = {2, 'U'},
-            L = {1, 'R'},
-            D = {2, 'L'},
-            B = {3, 'D'},
-          }), {INF, square_d - 1/4})
+        self.axes:add(shape:iter_hex_poles(), {INF, 0.78 * shape.hex_pole.mag})
+        self.axes:add(shape:iter_square_poles(), {INF, 0.85 * shape.square_pole.mag})
         
-        for _, a, t in sym.chiral:orbit(self.axes[sym.xoo], sym:thru(3,2)) do
-            self.twists:add(a, t, { gizmo_pole_distance = hex_d })
+        for _, a, t in shape.sym.chiral:orbit(self.axes[shape.hex_pole], shape.sym:thru(3,2)) do
+            self.twists:add(a, t, { gizmo_pole_distance = shape.hex_pole.mag })
         end
-        for _, a, t in sym.chiral:orbit(self.axes[sym.oox], sym:thru(2,1)) do
-            self.twists:add(a, t, { gizmo_pole_distance = square_d })
+        for _, a, t in shape.sym.chiral:orbit(self.axes[shape.square_pole], shape.sym:thru(2,1)) do
+            self.twists:add(a, t, { gizmo_pole_distance = shape.square_pole.mag })
         end
 
         lib.utils.unpack_named(_ENV, self.axes)
@@ -70,7 +51,7 @@ puzzles:add{
         self:mark_piece(F(1) & FLU(1) & ~FLD(1) & ~FRU(1), 'square_edge', 'Square Edge')
         self:mark_piece(FLU(1) & FRU(1) & ~F(1) & ~U(1), 'hex_edge', 'Hexagon Edge')
         self:mark_piece(F(1) & FLU(1) & FRU(1), 'corner', 'Corner')
-        self:unify_piece_types(sym.chiral)
+        self:unify_piece_types(shape.sym.chiral)
     end,
     tags = {
         author = { 'Jessica Chen' },
@@ -84,25 +65,20 @@ puzzles:add{
     version = '0.1.0',
     ndim = 3,
     build = function(self)
-        local sym = cd'h3'
+        local shape = lib.util.shape.icosidodecahedron(3/2)
+        local sym = shape.sym
 
-        local dodeca_d = sqrt((5 + 2*sqrt(5))/5)
-        local icosa_d = sqrt((7+3*sqrt(5))/6)
+        self:carve(shape:iter_penta_poles('Penta_'))
+        self:carve(shape:iter_tri_poles('Tri_'))
 
-        local dodeca = lib.symmetries.h3.dodecahedron(dodeca_d)
-        local icosa = lib.symmetries.h3.icosahedron(icosa_d)
-
-        self:carve(dodeca:iter_poles('Penta_'))
-        self:carve(icosa:iter_poles('Tri_'))
-
-        self.axes:add(dodeca:iter_poles('Penta_'), { INF, dodeca_d * 0.85 })
-        self.axes:add(icosa:iter_poles('Tri_'), { INF, icosa_d * 0.925 })
+        self.axes:add(shape:iter_penta_poles('Penta_'), { INF, shape.penta_pole.mag * 0.85 })
+        self.axes:add(shape:iter_tri_poles('Tri_'), { INF, shape.tri_pole.mag * 0.925 })
         
-        for _, a, t in sym.chiral:orbit(self.axes[sym.oox], sym:thru(2,1)) do
-            self.twists:add(a, t, { gizmo_pole_distance = dodeca_d })
+        for _, a, t in sym.chiral:orbit(self.axes[shape.penta_pole], sym:thru(2,1)) do
+            self.twists:add(a, t, { gizmo_pole_distance = shape.penta_pole.mag })
         end
-        for _, a, t in sym.chiral:orbit(self.axes[sym.xoo], sym:thru(3,2)) do
-            self.twists:add(a, t, { gizmo_pole_distance = icosa_d })
+        for _, a, t in sym.chiral:orbit(self.axes[shape.tri_pole], sym:thru(3,2)) do
+            self.twists:add(a, t, { gizmo_pole_distance = shape.tri_pole.mag })
         end
         
         lib.utils.unpack_named(_ENV, self.axes)
