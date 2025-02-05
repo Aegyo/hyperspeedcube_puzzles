@@ -1,4 +1,31 @@
 puzzles:add{
+    id = 'truncated_tetrahedron',
+    name = 'Truncated Tetrahedron',
+    version = '0.1.0',
+    ndim = 3,
+    build = function(self)
+        local sym = cd'a3'
+
+        local trunc_d = 5/3
+        self:carve(sym:orbit(sym.xoo.unit))
+        self:carve(sym:orbit(sym.oox.unit*trunc_d))
+
+        self.axes:add(sym.chiral:orbit(sym.xoo.unit), { INF, 0.7 })
+        self.axes:add(sym.chiral:orbit(sym.oox.unit), { INF, 0.8 * trunc_d })
+
+        for _, a, t in sym.chiral:orbit(self.axes[sym.xoo], sym:thru(3,2)) do
+            self.twists:add(a, t, {gizmo_pole_distance = 1})
+        end
+        for _, a, t in sym.chiral:orbit(self.axes[sym.oox], sym:thru(2,1)) do
+            self.twists:add(a, t, {gizmo_pole_distance = trunc_d})
+        end
+    end,
+    tags = {
+        author = { 'Jessica Chen' }
+    }
+}
+
+puzzles:add{
     id = 'truncated_octahedron',
     name = 'Truncated Octahedron',
     version = '0.1.0',
