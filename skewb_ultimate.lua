@@ -28,7 +28,6 @@ puzzles:add {
     end,
 
     tags = {
-        builtin = '2.0.0',
         inventor = "Tony Fisher",
         external = { museum = 656 },
         author = { "Jessica Chen" },

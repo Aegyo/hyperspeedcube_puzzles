@@ -1,10 +1,12 @@
+local shape = lib.util.shape
+
 puzzles:add{
     id = 'truncated_tetrahedron',
     name = 'Truncated Tetrahedron',
     version = '0.1.0',
     ndim = 3,
     build = function(self)
-        local shape = lib.util.shape.truncated_tetrahedron()
+        local shape = shape.truncated_tetrahedron()
 
         self:carve(shape:iter_hex_poles())
         self:carve(shape:iter_tri_poles())
@@ -20,7 +22,13 @@ puzzles:add{
         end
     end,
     tags = {
-        author = { 'Jessica Chen' }
+        author = { 'Jessica Chen' },
+        'shape/3d/archimedean',
+        'turns_by/facet',
+        'algebraic/doctrinaire',
+        'cuts/depth/shallow',
+        'type/puzzle',
+        'axes/3d/elementary/tetrahedral',
     }
 }
 
@@ -30,7 +38,7 @@ puzzles:add{
     version = '0.1.0',
     ndim = 3,
     build = function(self)
-        local shape = lib.util.shape.truncated_octahedron(3/2)
+        local shape = shape.truncated_octahedron(3/2)
         
         self:carve(shape:iter_hex_poles())
         self:carve(shape:iter_square_poles())
@@ -55,7 +63,12 @@ puzzles:add{
     end,
     tags = {
         author = { 'Jessica Chen' },
-        'shape/3d/archimedean'
+        'shape/3d/archimedean',
+        'turns_by/facet',
+        'algebraic/doctrinaire',
+        'cuts/depth/shallow',
+        'type/puzzle',
+        'axes/3d/archimedean/cuboctahedral',
     },
 }
 
@@ -65,7 +78,7 @@ puzzles:add{
     version = '0.1.0',
     ndim = 3,
     build = function(self)
-        local shape = lib.util.shape.icosidodecahedron(3/2)
+        local shape = shape.icosidodecahedron(3/2)
         local sym = shape.sym
 
         self:carve(shape:iter_penta_poles('Penta_'))
@@ -98,6 +111,12 @@ puzzles:add{
     end,
     tags = {
         author = { 'Jessica Chen' },
-        'shape/3d/archimedean'
+        'shape/3d/archimedean',
+        'turns_by/facet',
+        'algebraic/doctrinaire',
+        'cuts/depth/shallow',
+        'type/puzzle',
+        'axes/3d/elementary/icosahedral',
+        'axes/3d/elementary/dodecahedral',
     },
 }

@@ -62,9 +62,8 @@ puzzle_generators:add {
     },
 
     tags = {
-        builtin = '2.0.0',
         author = { "Jessica Chen" },
         'shape/3d/platonic/tetrahedron',
-        'axes/elementary/cubic'
+        'axes/3d/elementary/cubic'
     },
 }
