@@ -77,3 +77,24 @@ function icosidodecahedron(scale, basis)
         end,
     }
 end
+
+function rhombic_triacontahedron(scale, basis)
+    local s = scale or 1
+
+    local dual = icosidodecahedron(1, basis)
+    local hex1 = dual.penta_pole
+    local hex2 = dual.sym:thru(3,2):transform(dual.penta_pole)
+    local tri = dual.tri_pole
+
+    local dual_corner = vec(plane(hex1):antiwedge(plane(hex2)):antiwedge(plane(tri)))
+    local pole = s * dual_corner.unit / dual_corner.mag
+
+    return {
+        name = 'rhombic_triacontahedron',
+        sym = dual.sym,
+        pole = pole,
+        iter_poles = function()
+            return dual.sym:orbit(pole)
+        end
+    }
+end
