@@ -181,6 +181,15 @@ puzzles:add{
             self.twists:add(a, t, { gizmo_pole_distance = shape.hex_pole.mag })
         end
 
+        
+        lib.utils.unpack_named(_ENV, self.axes)
+        self:mark_piece(Penta_F(1) & ~Hex_U(1) & ~Hex_F(1) & ~Hex_R(1) & ~Hex_UR(1) & ~Hex_FR(1), 'penta_center', 'Pentagon Center')
+        self:mark_piece(Hex_F(1) & ~Hex_U(1) & ~Hex_FL(1) & ~Hex_FR(1) & ~Penta_F(1) & ~Penta_L(1) & ~Penta_DL(1), 'hex_center', 'Hexagon Center')
+        self:mark_piece(Penta_F(1) & Hex_U(1) & ~Hex_F(1) & ~Hex_UR(1), 'penta_edge', 'Penta-Hex Edge')
+        self:mark_piece(Hex_F(1) & Hex_U(1) & ~Penta_F(1) & ~Penta_L(1), 'hex_edge', 'Hex-Hex Edge')
+        self:mark_piece(Penta_F(1) & Hex_F(1) & Hex_U(1), 'corner', 'Corner')
+        self:unify_piece_types(shape.sym.chiral)
+
         recolor(self, 1, 12, 'Turbo')
         recolor(self, 13, 22, 'Light Rainbow')
         recolor(self, 23, 32, 'Dark Rainbow')
