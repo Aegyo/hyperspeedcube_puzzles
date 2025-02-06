@@ -117,8 +117,17 @@ end
 
 function truncated_icosahedron(scale, basis)
     local s = scale or 1
+
+    local icosa_in = (3*sqrt(3) + sqrt(15))/12
+    local icosa_circum = sqrt(10 + 2*sqrt(5)) / 4
+
+    local dodeca_in = sqrt(250 + 110*sqrt(5))/20
+    local dodeca_circum = (sqrt(15) + sqrt(3))/4
+
     local icosa_d = s
-    local dodeca_d = s * sqrt((3/2) * (7 + 3*sqrt(5))) / (sqrt((125 + 41*sqrt(5))/10) * 0.95)
+    local min_dodeca_d = s * dodeca_in / dodeca_circum
+    local max_dodeca_d = s * icosa_circum / icosa_in
+    local dodeca_d = min_dodeca_d + (max_dodeca_d - min_dodeca_d)/2
 
     local dodeca = lib.symmetries.h3.dodecahedron(dodeca_d, basis)
     local icosa = lib.symmetries.h3.icosahedron(icosa_d, basis)
