@@ -120,3 +120,41 @@ puzzles:add{
         'axes/3d/elementary/dodecahedral',
     },
 }
+
+-- kinda broken
+puzzles:add{
+    id = 'rhombicosidodecahedron',
+    name = 'Rhombicosidodecahedron',
+    version = '0.1.0',
+    ndim = 3,
+    build = function(self)
+        local shape = lib.util.shape.rhombicosidodecahedron()
+        local sym = shape.sym
+
+        self:carve(shape:iter_penta_poles())
+        self:carve(shape:iter_tri_poles())
+        self:carve(shape:iter_square_poles())
+
+        self.axes:add(shape:iter_penta_poles(), {INF, 0.91 * shape.penta_pole.mag })
+        self.axes:add(shape:iter_tri_poles(), {INF, 0.95 * shape.tri_pole.mag })
+        self.axes:add(shape:iter_square_poles(), {INF, 0.98 * shape.square_pole.mag })
+
+        for _, a, t in sym.chiral:orbit(self.axes[shape.penta_pole], sym:thru(2,1)) do
+            self.twists:add(a, t, { gizmo_pole_distance = shape.penta_pole.mag })
+        end
+        for _, a, t in sym.chiral:orbit(self.axes[shape.tri_pole], sym:thru(3,2)) do
+            self.twists:add(a, t, { gizmo_pole_distance = shape.tri_pole.mag })
+        end
+        for _, a, t in sym.chiral:orbit(self.axes[shape.square_pole], sym:thru(3,1)) do
+            self.twists:add(a, t, { gizmo_pole_distance = shape.square_pole.mag })
+        end
+    end,
+    tags = {
+        author = { 'Jessica Chen' },
+        'shape/3d/archimedean',
+        'turns_by/facet',
+        'algebraic/doctrinaire',
+        'cuts/depth/shallow',
+        'type/puzzle',
+    }
+}

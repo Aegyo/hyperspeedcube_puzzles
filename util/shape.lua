@@ -54,10 +54,10 @@ function truncated_octahedron(scale, basis)
     }
 end
 
-function icosidodecahedron(scale, basis)
+function icosidodecahedron(scale, alt_scale, basis)
     
     local s = scale or 1
-    local dodeca_d = s
+    local dodeca_d = alt_scale or s
     local icosa_d = s * sqrt((7+3*sqrt(5))/6) / sqrt((5 + 2*sqrt(5))/5)
 
     local dodeca = lib.symmetries.h3.dodecahedron(dodeca_d, basis)
@@ -96,5 +96,21 @@ function rhombic_triacontahedron(scale, basis)
         iter_poles = function()
             return dual.sym:orbit(pole)
         end
+    }
+end
+
+function rhombicosidodecahedron(scale, basis)
+    local base = icosidodecahedron(0.786, 0.84, basis)
+    local dual = rhombic_triacontahedron(1, basis)
+
+    return {
+        penta_pole = base.penta_pole,
+        tri_pole = base.tri_pole,
+        square_pole = dual.pole,
+        sym = base.sym,
+
+        iter_penta_poles = base.iter_penta_poles,
+        iter_tri_poles = base.iter_tri_poles,
+        iter_square_poles = dual.iter_poles,
     }
 end
