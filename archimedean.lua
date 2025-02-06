@@ -178,7 +178,7 @@ puzzles:add{
             self.twists:add(a, t, { gizmo_pole_distance = shape.hex_pole.mag })
         end
         for _, a, t in shape.sym.chiral:orbit(self.axes[shape.penta_pole], shape.sym:thru(2,1)) do
-            self.twists:add(a, t, { gizmo_pole_distance = shape.hex_pole.mag })
+            self.twists:add(a, t, { gizmo_pole_distance = shape.penta_pole.mag })
         end
 
         
