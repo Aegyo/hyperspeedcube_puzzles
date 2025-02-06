@@ -1,5 +1,11 @@
 local shape = lib.util.shape
 
+local recolor = function(puzzle, from, to, gradient)
+    for i = from, to do
+        puzzle.colors[i].default = gradient .. '['.. i ..'/' .. (to - from + 1) .. ']'
+    end
+end
+
 puzzles:add{
     id = 'truncated_tetrahedron',
     name = 'Truncated Tetrahedron',
@@ -102,12 +108,8 @@ puzzles:add{
         self:mark_piece(Penta_F(1) & Penta_L(1) & Tri_F(1) & Tri_U(1), 'corner', 'Corner')
         self:unify_piece_types(sym.chiral)
 
-        for i = 1,12 do
-            self.colors[i].default = 'Turbo[' .. i ..'/12]'
-        end
-        for i = 13,32 do
-            self.colors[i].default = 'Dark Rainbow['.. i ..'/20]'
-        end
+        recolor(self, 1, 12, 'Turbo')
+        recolor(self, 13, 32, 'Dark Rainbow')
     end,
     tags = {
         author = { 'Jessica Chen' },
@@ -156,5 +158,41 @@ puzzles:add{
         'algebraic/doctrinaire',
         'cuts/depth/shallow',
         'type/puzzle',
+    }
+}
+
+puzzles:add{
+    id = 'truncated_icosahedron',
+    name = 'Truncated Icosahedron',
+    version = '0.1.0',
+    ndim = 3,
+    build = function(self)
+        local shape = lib.util.shape.truncated_icosahedron(3/2)
+        self:carve(shape:iter_hex_poles('Hex_'))
+        self:carve(shape:iter_penta_poles('Penta_'))
+
+        self.axes:add(shape:iter_hex_poles('Hex_'), { INF, 0.95 * shape.hex_pole.mag })
+        self.axes:add(shape:iter_penta_poles('Penta_'), { INF, 0.95 * shape.penta_pole.mag })
+
+        for _, a, t in shape.sym.chiral:orbit(self.axes[shape.hex_pole], shape.sym:thru(3,2)) do
+            self.twists:add(a, t, { gizmo_pole_distance = shape.hex_pole.mag })
+        end
+        for _, a, t in shape.sym.chiral:orbit(self.axes[shape.penta_pole], shape.sym:thru(2,1)) do
+            self.twists:add(a, t, { gizmo_pole_distance = shape.hex_pole.mag })
+        end
+
+        recolor(self, 1, 12, 'Turbo')
+        recolor(self, 13, 22, 'Light Rainbow')
+        recolor(self, 23, 32, 'Dark Rainbow')
+    end,
+    tags = {
+        author = { 'Jessica Chen' },
+        'shape/3d/archimedean',
+        'turns_by/facet',
+        'algebraic/doctrinaire',
+        'cuts/depth/shallow',
+        'type/puzzle',
+        'axes/3d/elementary/dodecahedral',
+        'axes/3d/elementary/icosahedral',
     }
 }

@@ -114,3 +114,26 @@ function rhombicosidodecahedron(scale, basis)
         iter_square_poles = dual.iter_poles,
     }
 end
+
+function truncated_icosahedron(scale, basis)
+    local s = scale or 1
+    local icosa_d = s
+    local dodeca_d = s * sqrt((3/2) * (7 + 3*sqrt(5))) / (sqrt((125 + 41*sqrt(5))/10) * 0.95)
+
+    local dodeca = lib.symmetries.h3.dodecahedron(dodeca_d, basis)
+    local icosa = lib.symmetries.h3.icosahedron(icosa_d, basis)
+
+    return {
+        name = 'truncated_icosahedron',
+        sym = dodeca.sym,
+        penta_pole = dodeca.sym.oox.unit * dodeca_d,
+        hex_pole = icosa.sym.xoo.unit * icosa_d,
+
+        iter_penta_poles = function(self, prefix)
+            return dodeca:iter_poles(prefix)
+        end,
+        iter_hex_poles = function(self, prefix)
+            return icosa:iter_poles(prefix)
+        end,
+    }
+end
